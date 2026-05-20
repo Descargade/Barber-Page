@@ -1,0 +1,107 @@
+Create a premium modern barber shop landing page inspired by high-end SaaS websites like Vercel, Linear, Apple and modern creative studios.
+
+The website must be frontend-only and built with:
+
+React
+TailwindCSS
+Framer Motion
+Fully responsive
+Dark mode aesthetic
+Modern minimalist UI
+Clean reusable component structure
+
+STYLE:
+
+Luxurious dark interface
+Black and graphite backgrounds
+Soft gradients
+Subtle glassmorphism
+Elegant shadows
+Premium spacing
+Cinematic modern feel
+Smooth scroll animations
+Microinteractions on buttons and cards
+Modern typography using Inter or Geist font
+Large bold hero text
+High-end visual hierarchy
+
+AVOID:
+
+Generic barber templates
+Vintage barber aesthetics
+Old-school designs
+Cluttered layouts
+Too many colors
+Excessive animations
+Cheap gradients
+
+LAYOUT STRUCTURE:
+
+Sticky transparent navbar
+Logo left
+Menu center/right
+CTA booking button
+Hero section
+Massive cinematic headline
+Premium subtitle
+2 CTA buttons
+Background with subtle animated gradient and glow
+Floating glassmorphism cards
+Smooth reveal animations
+Services section
+Modern bento grid cards
+Haircut
+Beard trim
+Premium shave
+Fade cut
+Styling
+VIP experience
+About section
+Split layout
+Modern typography
+Elegant image placeholders
+Animated stats counters
+Gallery section
+Masonry or grid layout
+Hover zoom effects
+Premium showcase aesthetic
+Testimonials
+Glass cards
+Smooth carousel animation
+Minimal luxury style
+Booking CTA section
+Strong visual contrast
+Large centered typography
+Animated glowing button
+Footer
+Minimal clean footer
+Social links
+Contact info
+Elegant spacing
+
+DESIGN DETAILS:
+
+Use subtle animated background noise
+Add smooth scroll reveal animations
+Use hover lift effects
+Add subtle border glow effects
+Use rounded-xl and rounded-2xl
+Use layered shadows
+Add ambient lighting effects
+Maintain lots of whitespace
+Prioritize elegance and readability
+
+TECHNICAL:
+
+Component-based architecture
+Reusable sections
+Easy to customize colors and content
+Clean code structure
+Mobile-first responsive design
+Optimized performance
+Smooth Framer Motion transitions
+
+IMPORTANT:
+This should feel like a premium creative studio website mixed with a luxury modern barber brand.
+The design must look expensive, cinematic, modern, minimal, and highly polished.
+Do not make it look like a generic barber template.

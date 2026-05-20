@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "HjwXcY1RF_MnvqkFV1vkW"
+uri = "file://artifacts/barber-landing/public/images/hero.png"
+type = "image"
+title = "Cinematic barbershop interior"
+
+[[generated]]
+id = "c6jB0CagLVTye1SRqiLr9"
+uri = "file://artifacts/barber-landing/public/images/about.png"
+type = "image"
+title = "Barber hands holding razor"
+
+[[generated]]
+id = "wGjvXCpTCDbLXBdErbLEv"
+uri = "file://artifacts/barber-landing/public/images/gallery-1.png"
+type = "image"
+title = "Minimalist barber station"
+
+[[generated]]
+id = "yfq1l--HXxPqM3yyaBaSb"
+uri = "file://artifacts/barber-landing/public/images/gallery-2.png"
+type = "image"
+title = "Premium barber tools"
+
+[[generated]]
+id = "sGmMD2CuAkBXsEbQuj5ie"
+uri = "file://artifacts/barber-landing/public/images/gallery-3.png"
+type = "image"
+title = "Atmospheric portrait hair styling"
