@@ -1,44 +1,54 @@
-# [Project name]
+# NOIR Barber Landing Page
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A premium dark-aesthetic barber shop landing page template for Argentinian/LatAm barber clients, with real-time booking system and admin panel.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/barber-landing run dev` — run the landing page (port 25715)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000, not used by this app)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React + Vite + Tailwind CSS v4 + Framer Motion
+- Backend persistence: Supabase (PostgreSQL)
+- UI: shadcn/ui components
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/barber-landing/src/` — main app source
+  - `pages/Home.tsx` — full landing page with all sections
+  - `pages/Admin.tsx` — password-protected admin panel
+  - `context/BookingContext.tsx` — booking state, Supabase CRUD, real-time subscription
+  - `context/AdminAuthContext.tsx` — admin auth (password: `noir2024`)
+  - `components/BookingModal.tsx` — 5-step booking flow modal
+  - `lib/supabase.ts` — Supabase client init
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Supabase table `appointments` with columns: `id`, `name`, `phone`, `service`, `barber_id`, `barber_name`, `date`, `time`, `status` (default `pendiente`), `created_at`. RLS allows public select/insert/update.
+- `supabase.ts` hardcodes the project URL (`https://ptcrrzshpbcdagmdrjcv.supabase.co`) since it's public. The anon key is read from `VITE_SUPABASE_URL` secret (note: secrets were stored with swapped names — `VITE_SUPABASE_URL` holds the anon key value).
+- Real-time sync via `supabase.channel("appointments-changes")` postgres_changes subscription.
+- DB rows are snake_case; TypeScript types are camelCase — mapped via `rowToAppointment()`.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Cinematic dark hero, services, about, gallery, testimonials, booking CTA, footer — all in Spanish (Argentinian/LatAm tone)
+- 5-step booking modal: service → barber → date/time → datos → confirmación
+- Slot availability: blocks same service+barberId+date+time for non-cancelled appointments
+- Admin panel at `/admin` (password: `noir2024`): appointment cards, status controls (pendiente/confirmado/cancelado), filter bar, animated stat counters
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- All user-facing text in Spanish (professional Argentinian/LatAm tone)
+- Do NOT import React explicitly (Vite JSX transformer handles it)
+- Never add unused imports (TypeScript strict)
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Replit secrets `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are **swapped** — the secret named `VITE_SUPABASE_URL` actually contains the anon key, and vice versa. `supabase.ts` accounts for this by hardcoding the URL and reading the anon key from `VITE_SUPABASE_URL`.
+- If Vite dep cache gets stale, run: `rm -rf artifacts/barber-landing/node_modules/.vite`
 
 ## Pointers
 
