@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AdminAuthProvider, useAdminAuth } from "@/context/AdminAuthContext";
-import { BookingProvider, useBooking, Appointment, AppointmentStatus } from "@/context/BookingContext";
+import { BookingProvider, useBooking, Appointment, AppointmentStatus, SERVICES } from "@/context/BookingContext";
 import { Button } from "@/components/ui/button";
 
 function AdminDashboard() {
@@ -15,11 +15,11 @@ function AdminDashboard() {
       const stored = localStorage.getItem("noir_appointments");
       if (!stored || JSON.parse(stored).length === 0) {
         const mockAppointments: Omit<Appointment, "status">[] = [
-          { id: "m1", name: "Mateo Rossi", phone: "1123456789", service: "corte-director", date: "2024-06-15", time: "10:00", createdAt: new Date().toISOString() },
-          { id: "m2", name: "Lucas Fernández", phone: "1198765432", service: "afeitado-tradicional", date: "2024-06-16", time: "11:00", createdAt: new Date(Date.now() - 3600000).toISOString() },
-          { id: "m3", name: "Santiago Silva", phone: "1134567890", service: "reset-ejecutivo", date: "2024-06-17", time: "14:00", createdAt: new Date(Date.now() - 7200000).toISOString() },
-          { id: "m4", name: "Tomás Álvarez", phone: "1187654321", service: "arquitectura-barba", date: "2024-06-18", time: "16:00", createdAt: new Date(Date.now() - 86400000).toISOString() },
-          { id: "m5", name: "Agustín Romero", phone: "1145678901", service: "corte-director", date: "2024-06-19", time: "18:00", createdAt: new Date(Date.now() - 172800000).toISOString() }
+          { id: "m1", name: "Mateo Rossi", phone: "1123456789", service: "corte-director", barberId: "luciano", barberName: "Luciano", date: "2024-06-15", time: "10:00", createdAt: new Date().toISOString() },
+          { id: "m2", name: "Lucas Fernández", phone: "1198765432", service: "afeitado-tradicional", barberId: "mateo", barberName: "Mateo", date: "2024-06-16", time: "11:00", createdAt: new Date(Date.now() - 3600000).toISOString() },
+          { id: "m3", name: "Santiago Silva", phone: "1134567890", service: "reset-ejecutivo", barberId: "luciano", barberName: "Luciano", date: "2024-06-17", time: "14:00", createdAt: new Date(Date.now() - 7200000).toISOString() },
+          { id: "m4", name: "Tomás Álvarez", phone: "1187654321", service: "arquitectura-barba", barberId: "mateo", barberName: "Mateo", date: "2024-06-18", time: "16:00", createdAt: new Date(Date.now() - 86400000).toISOString() },
+          { id: "m5", name: "Agustín Romero", phone: "1145678901", service: "corte-director", barberId: "luciano", barberName: "Luciano", date: "2024-06-19", time: "18:00", createdAt: new Date(Date.now() - 172800000).toISOString() }
         ];
         mockAppointments.forEach(a => addAppointment(a));
         
@@ -96,7 +96,7 @@ function AdminDashboard() {
                 >
                   <div>
                     <h3 className="text-xl font-light text-foreground mb-1">{apt.name} <span className="text-sm text-foreground/40 ml-2">{apt.phone}</span></h3>
-                    <p className="text-foreground/50 text-sm mb-2">{apt.service.replace("-", " ")}</p>
+                    <p className="text-foreground/50 text-sm mb-2">{SERVICES.find(s => s.slug === apt.service)?.name ?? apt.service} <span className="text-foreground/30">·</span> {apt.barberName ?? "—"}</p>
                     <p className="text-primary text-sm font-medium tracking-wide">{apt.date} — {apt.time}</p>
                   </div>
                   

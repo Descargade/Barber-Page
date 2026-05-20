@@ -65,7 +65,7 @@ export default function About() {
 
             <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/5 pt-8">
               <div>
-                <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">01.</h4>
+                <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">02.</h4>
                 <p className="text-sm text-foreground/50 uppercase tracking-widest">Maestros Barberos</p>
               </div>
               <div>

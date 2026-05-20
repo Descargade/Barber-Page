@@ -1,0 +1,104 @@
+Improve the booking system logic and user flow.
+
+BOOKING AVAILABILITY LOGIC:
+
+* If a specific service is already booked at a specific date and time, that SAME service must no longer appear available for that exact slot.
+* However, other services can still be booked at the same date and time.
+
+Example:
+
+* "El Corte del Director" booked on Saturday at 11:00 → unavailable for that slot
+* "Afeitado Clásico con Navaja" can still be booked at Saturday 11:00
+
+The availability system must work dynamically using localStorage and frontend logic only.
+
+BOOKING FLOW UX:
+Create a multi-step booking modal with:
+
+1. Servicio
+2. Barbero
+3. Fecha y hora
+4. Datos personales
+5. Confirmación
+
+IMPORTANT:
+
+* User must be able to go backwards between steps
+* Add previous/next navigation
+* Preserve selected data while navigating
+* Smooth animated transitions between steps
+
+BARBERS:
+
+* Add barber selection step
+* There are ONLY 2 master barbers
+* Correct all sections mentioning barbers if needed
+
+BARBER EXAMPLES:
+
+* Luciano
+* Mateo
+
+Each barber should have:
+
+* Name
+* Role
+* Small premium profile card
+* Selectable UI state
+
+BOOKING UX DETAILS:
+
+* Prevent invalid bookings
+* Disable unavailable slots visually
+* Add loading states
+* Add success animation
+* Add elegant hover states
+* Mobile-first responsive design
+
+IMPORTANT DEPLOYMENT REQUIREMENTS:
+This project MUST remain:
+
+* Extremely easy to deploy on Vercel
+* Optimized for pnpm
+* Frontend-first architecture
+* Lightweight
+* Simple to maintain
+* Reusable for future barber clients
+
+DO NOT introduce:
+
+* complex backend infrastructure
+* difficult deployment setup
+* Docker
+* Prisma
+* external databases
+* authentication services
+* server-side dependencies
+
+If any minimal backend logic becomes necessary:
+
+* Explain clearly how deployment works on Vercel
+* Keep setup extremely simple
+* Prefer frontend/localStorage solutions first
+* Minimize configuration steps
+
+ADMIN PANEL:
+
+* Keep admin panel lightweight
+* Frontend-only if possible
+* Easy to access and manage bookings
+* Easy to deploy with the rest of the site on Vercel
+
+FINAL DESIGN DIRECTION:
+Keep improving:
+
+* typography hierarchy
+* spacing consistency
+* premium feel
+* microinteractions
+* hover animations
+* mobile responsiveness
+* visual polish
+* dark luxury aesthetic
+
+Make the final result feel cinematic, modern, expensive and similar to premium Awwwards creative studio websites.
