@@ -1,0 +1,85 @@
+Perfect. The admin panel structure is exactly the direction I want.
+
+Now we need to solve the MOST IMPORTANT problem:
+the booking system still depends on localStorage, so bookings are not shared globally between users and devices.
+
+We now need REAL shared persistence while keeping the project lightweight and extremely easy to deploy on Vercel with pnpm.
+
+IMPORTANT:
+Do NOT convert this into a heavy full-stack application.
+
+BEST DIRECTION:
+Use Supabase as the cloud database solution.
+
+WHY:
+
+* Easy Vercel deployment
+* Minimal setup
+* No custom backend required
+* Perfect for reusable client templates
+* Shared real-time booking data
+* Lightweight architecture
+* Easy future scalability
+
+REQUIREMENTS:
+
+* Replace localStorage bookings with Supabase persistence
+* Keep the same frontend architecture
+* Keep admin panel frontend-first
+* Maintain fast performance
+* Prevent duplicate bookings globally
+* Disable already reserved slots in real-time
+
+DATABASE LOGIC:
+A reservation should only block:
+
+* same barber
+* same service
+* same date
+* same time
+
+Other services can still be booked if availability rules allow it.
+
+IMPORTANT:
+Keep booking logic simple and realistic for a barber shop with 2 barbers.
+
+DEPLOYMENT REQUIREMENTS:
+Explain clearly:
+
+1. How to create Supabase project
+2. Which tables to create
+3. Required columns
+4. Environment variables needed
+5. How to deploy to Vercel
+6. Exact pnpm commands
+7. How future clients can duplicate the template easily
+
+IMPORTANT:
+Do not introduce:
+
+* Express servers
+* Prisma
+* Docker
+* complicated auth
+* unnecessary backend architecture
+
+The project should still feel like:
+
+* a premium frontend template
+* lightweight
+* elegant
+* scalable
+* reusable for many barber clients
+
+UI:
+Keep improving:
+
+* premium typography
+* smooth animations
+* luxury dark aesthetic
+* microinteractions
+* spacing consistency
+* mobile responsiveness
+* cinematic visual polish
+
+Make it feel like a premium Awwwards creative studio website.
