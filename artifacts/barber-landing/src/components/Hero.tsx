@@ -11,6 +11,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background z-10" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50 z-10" />
+        <div className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none" style={{backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px"}} />
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -35,6 +36,7 @@ export default function Hero() {
 
         <motion.h1
           className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-foreground mb-8 max-w-4xl"
+          style={{ WebkitFontSmoothing: 'antialiased' }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -55,7 +57,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-6"
+          className="flex flex-col sm:flex-row gap-4 items-center justify-center"
         >
           <Button 
             onClick={() => openBooking()}
@@ -66,6 +68,8 @@ export default function Hero() {
             <span className="relative z-10">Reservar un turno</span>
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </Button>
+          
+          <div className="hidden sm:block w-8 h-[1px] bg-white/10" />
           
           <Button 
             size="lg"

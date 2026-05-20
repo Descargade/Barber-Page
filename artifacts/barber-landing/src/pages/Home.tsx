@@ -12,7 +12,7 @@ import { BookingProvider } from "@/context/BookingContext";
 export default function Home() {
   return (
     <BookingProvider>
-      <div className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-primary/30 selection:text-primary">
+      <div className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-primary/30 selection:text-primary has-[.mobile-menu-open]:blur-sm transition-all duration-300">
         <Navbar />
         <main>
           <Hero />

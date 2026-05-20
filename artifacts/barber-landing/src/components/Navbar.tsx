@@ -74,7 +74,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <motion.div 
-          className="md:hidden absolute top-full left-0 w-full bg-background border-b border-white/5 py-6 px-6 flex flex-col gap-6"
+          className="md:hidden absolute top-full left-0 w-full bg-background/80 backdrop-blur-xl border-b border-white/5 py-6 px-6 flex flex-col gap-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >

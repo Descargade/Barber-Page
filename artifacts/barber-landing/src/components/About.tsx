@@ -1,6 +1,20 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function About() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let current = 0;
+    const end = 45;
+    const timer = setInterval(() => {
+      current += 1;
+      setCount(current);
+      if (current >= end) clearInterval(timer);
+    }, 40);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section id="about" className="py-32 relative bg-background">
       <div className="container mx-auto px-6 md:px-12">
@@ -55,7 +69,7 @@ export default function About() {
                 <p className="text-sm text-foreground/50 uppercase tracking-widest">Maestros Barberos</p>
               </div>
               <div>
-                <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">45<span className="text-primary/70 text-xl">m</span></h4>
+                <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">{count}<span className="text-primary/70 text-xl">m</span></h4>
                 <p className="text-sm text-foreground/50 uppercase tracking-widest">Turno Mínimo</p>
               </div>
             </div>

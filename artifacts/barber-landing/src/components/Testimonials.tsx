@@ -20,8 +20,8 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-32 relative bg-secondary/20 overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-primary/30 to-transparent" />
+    <section className="py-32 relative bg-secondary/20 overflow-hidden border-t border-primary/20">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-primary/50 to-transparent" />
       
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
@@ -30,6 +30,7 @@ export default function Testimonials() {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.01 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2, duration: 0.8 }}
               className="flex flex-col relative"

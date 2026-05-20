@@ -34,16 +34,21 @@ export default function Services() {
               key={service.slug}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -4 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="group relative bg-card/50 backdrop-blur-sm border border-white/5 p-8 hover:border-primary/30 transition-colors duration-500 flex flex-col h-full"
+              transition={{ delay: index * 0.1, duration: 0.3 }}
+              className="group relative bg-card/50 backdrop-blur-sm border border-white/5 p-8 hover:border-primary/30 transition-colors duration-500 flex flex-col h-full overflow-hidden cursor-pointer"
+              onClick={() => openBooking(service.slug)}
             >
               {/* Subtle hover glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-2xl font-light text-foreground">{service.name}</h3>
+                  <h3 className="text-2xl font-light text-foreground flex items-center gap-2">
+                    {service.name}
+                    <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary">→</span>
+                  </h3>
                   <span className="text-primary text-xl font-light tracking-widest">{service.price}</span>
                 </div>
                 
@@ -54,7 +59,6 @@ export default function Services() {
                 <div className="flex justify-between items-center mt-auto border-t border-white/5 pt-6">
                   <span className="text-xs text-foreground/40 uppercase tracking-[0.2em]">{service.duration}</span>
                   <Button 
-                    onClick={() => openBooking(service.slug)}
                     variant="link" 
                     className="text-primary hover:text-primary-foreground hover:bg-primary px-4 py-2 h-auto text-xs tracking-widest uppercase rounded-none transition-all"
                     data-testid={`button-book-${service.slug}`}

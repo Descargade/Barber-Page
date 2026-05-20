@@ -10,7 +10,8 @@ export default function BookingCTA() {
       <div className="absolute inset-0 bg-background z-0" />
       
       {/* Ambient glowing orb */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] bg-primary/5 rounded-full blur-[100px] z-0 animate-pulse" style={{ animationDuration: '4s' }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] bg-primary/10 rounded-full blur-[100px] z-0 animate-pulse" style={{ animationDuration: '4s' }} />
+      <div className="absolute top-1/4 right-1/4 w-[30vw] h-[30vw] md:w-[20vw] md:h-[20vw] bg-primary/10 rounded-full blur-[80px] z-0 animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
 
       <div className="relative z-10 container mx-auto px-6 text-center">
         <motion.div
@@ -30,15 +31,17 @@ export default function BookingCTA() {
             Los turnos son limitados para garantizar una calidad sin concesiones y una experiencia sin apuros.
           </p>
 
-          <Button 
-            onClick={() => openBooking()}
-            size="lg"
-            className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-8 text-base tracking-[0.2em] uppercase relative overflow-hidden group shadow-[0_0_30px_rgba(204,153,85,0.2)] hover:shadow-[0_0_40px_rgba(204,153,85,0.4)] transition-all duration-500 w-full md:w-auto"
-            data-testid="button-cta-book"
-          >
-            <span className="relative z-10">Asegurar mi turno</span>
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-          </Button>
+          <motion.div whileHover={{ scale: 1.02 }} className="w-full md:w-auto">
+            <Button 
+              onClick={() => openBooking()}
+              size="lg"
+              className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-8 text-base tracking-[0.2em] uppercase relative overflow-hidden group shadow-[0_0_30px_rgba(204,153,85,0.2)] hover:shadow-[0_0_40px_rgba(204,153,85,0.4)] transition-all duration-500 w-full"
+              data-testid="button-cta-book"
+            >
+              <span className="relative z-10">Asegurar mi turno</span>
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            </Button>
+          </motion.div>
 
           <p className="mt-8 text-xs text-foreground/40 uppercase tracking-widest">
             No se aceptan turnos sin reserva.

@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-foreground/70 py-16 border-t border-white/5">
+    <footer className="bg-secondary text-foreground/70 py-16 border-t border-transparent" style={{ borderImage: "linear-gradient(to right, transparent, rgba(204,153,85,0.2), transparent) 1" }}>
       <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12">
         
         <div className="col-span-1 md:col-span-1 flex flex-col">
@@ -41,9 +41,9 @@ export default function Footer() {
 
         <div className="col-span-1 flex flex-col gap-4">
           <h4 className="text-foreground uppercase tracking-widest text-xs font-medium mb-2">Contacto</h4>
-          <a href="#" className="font-light text-sm hover:text-primary transition-colors w-fit">Instagram</a>
-          <a href="#" className="font-light text-sm hover:text-primary transition-colors w-fit">Revista</a>
-          <a href="#" className="font-light text-sm hover:text-primary transition-colors w-fit">Concierge@noir.studio</a>
+          <a href="#" className="font-light text-sm hover:text-primary hover:tracking-wide transition-all w-fit">Instagram</a>
+          <a href="#" className="font-light text-sm hover:text-primary hover:tracking-wide transition-all w-fit">Revista</a>
+          <a href="#" className="font-light text-sm hover:text-primary hover:tracking-wide transition-all w-fit">Concierge@noir.studio</a>
         </div>
       </div>
 

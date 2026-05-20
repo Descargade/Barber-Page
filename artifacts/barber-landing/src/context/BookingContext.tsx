@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
+export type AppointmentStatus = "pendiente" | "confirmado" | "cancelado";
+
 export type Appointment = {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export type Appointment = {
   date: string;
   time: string;
   createdAt: string;
+  status: AppointmentStatus;
 };
 
 export const SERVICES = [
@@ -47,7 +50,8 @@ type BookingContextType = {
   appointments: Appointment[];
   openBooking: (serviceSlug?: string) => void;
   closeBooking: () => void;
-  addAppointment: (appointment: Appointment) => void;
+  addAppointment: (appointment: Omit<Appointment, "status">) => void;
+  updateAppointmentStatus: (id: string, status: AppointmentStatus) => void;
 };
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
@@ -78,18 +82,29 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     setTimeout(() => setSelectedService(null), 300);
   };
 
-  const addAppointment = (appointment: Appointment) => {
-    const updated = [...appointments, appointment];
+  const addAppointment = (appointment: Omit<Appointment, "status">) => {
+    const newAppointment: Appointment = { ...appointment, status: "pendiente" };
+    const updated = [...appointments, newAppointment];
     setAppointments(updated);
     try {
       localStorage.setItem("noir_appointments", JSON.stringify(updated));
     } catch (e) {
-      console.error("Error writing to localStorage", e);
+      // ignore
+    }
+  };
+
+  const updateAppointmentStatus = (id: string, status: AppointmentStatus) => {
+    const updated = appointments.map(a => a.id === id ? { ...a, status } : a);
+    setAppointments(updated);
+    try {
+      localStorage.setItem("noir_appointments", JSON.stringify(updated));
+    } catch (e) {
+      // ignore
     }
   };
 
   return (
-    <BookingContext.Provider value={{ isOpen, selectedService, appointments, openBooking, closeBooking, addAppointment }}>
+    <BookingContext.Provider value={{ isOpen, selectedService, appointments, openBooking, closeBooking, addAppointment, updateAppointmentStatus }}>
       {children}
     </BookingContext.Provider>
   );
