@@ -6,31 +6,8 @@ import { Button } from "@/components/ui/button";
 
 function AdminDashboard() {
   const { logout } = useAdminAuth();
-  const { appointments, updateAppointmentStatus, addAppointment } = useBooking();
+  const { appointments, updateAppointmentStatus, loading } = useBooking();
   const [filter, setFilter] = useState<"todos" | AppointmentStatus>("todos");
-  
-  // Mock data setup
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("noir_appointments");
-      if (!stored || JSON.parse(stored).length === 0) {
-        const mockAppointments: Omit<Appointment, "status">[] = [
-          { id: "m1", name: "Mateo Rossi", phone: "1123456789", service: "corte-director", barberId: "luciano", barberName: "Luciano", date: "2024-06-15", time: "10:00", createdAt: new Date().toISOString() },
-          { id: "m2", name: "Lucas Fernández", phone: "1198765432", service: "afeitado-tradicional", barberId: "mateo", barberName: "Mateo", date: "2024-06-16", time: "11:00", createdAt: new Date(Date.now() - 3600000).toISOString() },
-          { id: "m3", name: "Santiago Silva", phone: "1134567890", service: "reset-ejecutivo", barberId: "luciano", barberName: "Luciano", date: "2024-06-17", time: "14:00", createdAt: new Date(Date.now() - 7200000).toISOString() },
-          { id: "m4", name: "Tomás Álvarez", phone: "1187654321", service: "arquitectura-barba", barberId: "mateo", barberName: "Mateo", date: "2024-06-18", time: "16:00", createdAt: new Date(Date.now() - 86400000).toISOString() },
-          { id: "m5", name: "Agustín Romero", phone: "1145678901", service: "corte-director", barberId: "luciano", barberName: "Luciano", date: "2024-06-19", time: "18:00", createdAt: new Date(Date.now() - 172800000).toISOString() }
-        ];
-        mockAppointments.forEach(a => addAppointment(a));
-        
-        // Timeout to let them be added then update statuses
-        setTimeout(() => {
-          updateAppointmentStatus("m1", "confirmado");
-          updateAppointmentStatus("m3", "cancelado");
-        }, 100);
-      }
-    } catch {}
-  }, [addAppointment, updateAppointmentStatus]);
 
   const filteredAppointments = appointments
     .filter(a => filter === "todos" || a.status === filter)
@@ -52,78 +29,89 @@ function AdminDashboard() {
       </header>
 
       <main className="container mx-auto px-6 py-12 max-w-5xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <StatCard title="Total" value={totalCount} />
-          <StatCard title="Confirmados" value={confirmedCount} />
-          <StatCard title="Pendientes" value={pendingCount} />
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-8 h-8 rounded-full border border-primary/30 border-t-primary animate-spin" />
+              <p className="text-foreground/40 text-sm tracking-widest uppercase">Cargando turnos</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <StatCard title="Total" value={totalCount} />
+              <StatCard title="Confirmados" value={confirmedCount} />
+              <StatCard title="Pendientes" value={pendingCount} />
+            </div>
 
-        <div className="flex flex-wrap gap-3 mb-8">
-          {(["todos", "pendiente", "confirmado", "cancelado"] as const).map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-full text-sm capitalize transition-all border ${filter === f ? "border-primary bg-primary/10 text-primary" : "border-white/10 text-foreground/60 hover:border-white/30"}`}
-              data-testid={`filter-${f}`}
-            >
-              {f === "todos" ? "Todos" : f + "s"}
-            </button>
-          ))}
-        </div>
-
-        <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {filteredAppointments.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-20"
-              >
-                <p className="text-foreground/50 font-light mb-4">Aún no hay turnos registrados.</p>
-                <div className="w-16 h-px bg-white/10 mx-auto" />
-              </motion.div>
-            ) : (
-              filteredAppointments.map((apt, index) => (
-                <motion.div
-                  key={apt.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="bg-card border border-white/5 rounded-xl p-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center"
+            <div className="flex flex-wrap gap-3 mb-8">
+              {(["todos", "pendiente", "confirmado", "cancelado"] as const).map(f => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-4 py-2 rounded-full text-sm capitalize transition-all border ${filter === f ? "border-primary bg-primary/10 text-primary" : "border-white/10 text-foreground/60 hover:border-white/30"}`}
+                  data-testid={`filter-${f}`}
                 >
-                  <div>
-                    <h3 className="text-xl font-light text-foreground mb-1">{apt.name} <span className="text-sm text-foreground/40 ml-2">{apt.phone}</span></h3>
-                    <p className="text-foreground/50 text-sm mb-2">{SERVICES.find(s => s.slug === apt.service)?.name ?? apt.service} <span className="text-foreground/30">·</span> {apt.barberName ?? "—"}</p>
-                    <p className="text-primary text-sm font-medium tracking-wide">{apt.date} — {apt.time}</p>
-                  </div>
-                  
-                  <div className="flex gap-2 w-full md:w-auto">
-                    {(["pendiente", "confirmado", "cancelado"] as AppointmentStatus[]).map(status => (
-                      <motion.button
-                        key={status}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => updateAppointmentStatus(apt.id, status)}
-                        className={`px-3 py-1.5 rounded-md text-xs uppercase tracking-wider transition-colors flex-1 md:flex-none border ${
-                          apt.status === status
-                            ? status === "pendiente" ? "bg-amber-500/20 text-amber-500 border-amber-500/50"
-                            : status === "confirmado" ? "bg-green-500/20 text-green-500 border-green-500/50"
-                            : "bg-red-500/20 text-red-500 border-red-500/50"
-                            : "bg-transparent text-foreground/40 border-white/5 hover:border-white/20 hover:text-foreground"
-                        }`}
-                        data-testid={`status-${apt.id}-${status}`}
-                      >
-                        {status}
-                      </motion.button>
-                    ))}
-                  </div>
-                </motion.div>
-              ))
-            )}
-          </AnimatePresence>
-        </div>
+                  {f === "todos" ? "Todos" : f + "s"}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              <AnimatePresence mode="popLayout">
+                {filteredAppointments.length === 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center py-20"
+                  >
+                    <p className="text-foreground/50 font-light mb-4">Aún no hay turnos registrados.</p>
+                    <div className="w-16 h-px bg-white/10 mx-auto" />
+                  </motion.div>
+                ) : (
+                  filteredAppointments.map((apt, index) => (
+                    <motion.div
+                      key={apt.id}
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="bg-card border border-white/5 rounded-xl p-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center"
+                    >
+                      <div>
+                        <h3 className="text-xl font-light text-foreground mb-1">{apt.name} <span className="text-sm text-foreground/40 ml-2">{apt.phone}</span></h3>
+                        <p className="text-foreground/50 text-sm mb-2">{SERVICES.find(s => s.slug === apt.service)?.name ?? apt.service} <span className="text-foreground/30">·</span> {apt.barberName ?? "—"}</p>
+                        <p className="text-primary text-sm font-medium tracking-wide">{apt.date} — {apt.time}</p>
+                      </div>
+                      
+                      <div className="flex gap-2 w-full md:w-auto">
+                        {(["pendiente", "confirmado", "cancelado"] as AppointmentStatus[]).map(status => (
+                          <motion.button
+                            key={status}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => void updateAppointmentStatus(apt.id, status)}
+                            className={`px-3 py-1.5 rounded-md text-xs uppercase tracking-wider transition-colors flex-1 md:flex-none border ${
+                              apt.status === status
+                                ? status === "pendiente" ? "bg-amber-500/20 text-amber-500 border-amber-500/50"
+                                : status === "confirmado" ? "bg-green-500/20 text-green-500 border-green-500/50"
+                                : "bg-red-500/20 text-red-500 border-red-500/50"
+                                : "bg-transparent text-foreground/40 border-white/5 hover:border-white/20 hover:text-foreground"
+                            }`}
+                            data-testid={`status-${apt.id}-${status}`}
+                          >
+                            {status}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

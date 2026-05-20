@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useBooking, SERVICES, BARBERS, isSlotTaken } from "@/context/BookingContext";
 
 export default function BookingModal() {
-  const { isOpen, closeBooking, selectedService, addAppointment, appointments } = useBooking();
+  const { isOpen, closeBooking, selectedService, addAppointment, appointments, loading } = useBooking();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [service, setService] = useState<string | null>(null);
   const [barber, setBarber] = useState<string | null>(null);
@@ -61,25 +62,27 @@ export default function BookingModal() {
 
   const times = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name.trim() || !/^[0-9\s\-\+]{8,}$/.test(phone)) return;
     if (!service || !barber || !date || !time) return;
-
-    const barberObj = BARBERS.find(b => b.id === barber);
-
-    addAppointment({
-      id: Date.now().toString(),
-      name,
-      phone,
-      service,
-      barberId: barber,
-      barberName: barberObj?.name || barber,
-      date,
-      time,
-      createdAt: new Date().toISOString()
-    });
-    
-    setIsSuccess(true);
+    setIsSubmitting(true);
+    try {
+      const barberObj = BARBERS.find(b => b.id === barber);
+      await addAppointment({
+        id: Date.now().toString(),
+        name,
+        phone,
+        service: service ?? "",
+        barberId: barber ?? "",
+        barberName: barberObj?.name ?? barber ?? "",
+        date: date ?? "",
+        time: time ?? "",
+        createdAt: new Date().toISOString(),
+      });
+      setIsSuccess(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const variants = {
@@ -296,7 +299,11 @@ export default function BookingModal() {
                       animate={{ opacity: 1 }}
                       className="grid grid-cols-5 gap-2 mt-2"
                     >
-                      {times.map((t) => {
+                      {loading ? (
+                        Array.from({ length: 10 }).map((_, i) => (
+                          <div key={i} className="py-2 rounded-full border border-white/5 bg-white/3 animate-pulse h-[38px]" />
+                        ))
+                      ) : times.map((t) => {
                         const taken = service && barber && date ? isSlotTaken(appointments, service, barber, date, t) : false;
                         return (
                           <button
@@ -373,12 +380,12 @@ export default function BookingModal() {
                   
                   <div className="mt-auto pt-4">
                     <Button 
-                      onClick={handleSubmit}
-                      disabled={!name.trim() || !/^[0-9\s\-\+]{8,}$/.test(phone)}
+                      onClick={() => void handleSubmit()}
+                      disabled={!name.trim() || !/^[0-9\s\-\+]{8,}$/.test(phone) || isSubmitting}
                       className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
                       data-testid="button-confirm-booking"
                     >
-                      Confirmar turno
+                      {isSubmitting ? "Reservando..." : "Confirmar turno"}
                     </Button>
                   </div>
                 </motion.div>
