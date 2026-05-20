@@ -12,10 +12,10 @@ export default function Gallery() {
         >
           <div>
             <span className="text-primary font-medium tracking-[0.2em] text-sm uppercase mb-4 block">
-              The Space
+              El Espacio
             </span>
             <h2 className="text-4xl md:text-5xl font-light text-foreground">
-              Designed for <span className="italic font-serif text-primary/90">Clarity</span>
+              Diseñado para la <span className="italic font-serif text-primary/90">Claridad</span>
             </h2>
           </div>
           <div className="hidden md:block text-foreground/40 text-sm tracking-widest uppercase">

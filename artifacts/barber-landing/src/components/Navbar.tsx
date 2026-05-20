@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useBooking } from "@/context/BookingContext";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { openBooking } = useBooking();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
   });
 
   const navLinks = [
-    { name: "Story", href: "#about" },
-    { name: "Services", href: "#services" },
+    { name: "Historia", href: "#about" },
+    { name: "Servicios", href: "#services" },
     { name: "Atelier", href: "#gallery" },
   ];
 
@@ -51,10 +53,11 @@ export default function Navbar() {
             </a>
           ))}
           <Button 
+            onClick={() => openBooking()}
             className="rounded-none bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 transition-all px-6 tracking-wide"
             data-testid="button-nav-book"
           >
-            RESERVE
+            RESERVAR
           </Button>
         </nav>
 
@@ -85,8 +88,14 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button className="w-full rounded-none bg-primary text-primary-foreground">
-            RESERVE
+          <Button 
+            onClick={() => {
+              setMobileMenuOpen(false);
+              openBooking();
+            }}
+            className="w-full rounded-none bg-primary text-primary-foreground"
+          >
+            RESERVAR
           </Button>
         </motion.div>
       )}

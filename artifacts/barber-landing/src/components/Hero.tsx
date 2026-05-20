@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useBooking } from "@/context/BookingContext";
 
 export default function Hero() {
+  const { openBooking } = useBooking();
+
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -26,7 +29,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="text-primary font-medium tracking-[0.2em] text-xs md:text-sm uppercase mb-6 block">
-            Tribeca, New York
+            Tribeca, Nueva York
           </span>
         </motion.div>
 
@@ -36,7 +39,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Where precision meets <span className="italic text-primary/90 font-serif">ritual.</span>
+          Donde la precisión <br className="hidden md:block" />se vuelve <span className="italic text-primary/90 font-serif">ritual.</span>
         </motion.h1>
 
         <motion.p
@@ -45,7 +48,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          A high-end grooming studio for those who understand that every deliberate cut is a silent statement. Unhurried. Uncompromised.
+          Un estudio de alta gama para quienes entienden que cada corte deliberado es una declaración silenciosa. Sin apuros. Sin concesiones.
         </motion.p>
 
         <motion.div
@@ -55,11 +58,12 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-6"
         >
           <Button 
+            onClick={() => openBooking()}
             size="lg"
             className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase relative overflow-hidden group shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
             data-testid="button-hero-book"
           >
-            <span className="relative z-10">Reserve a Chair</span>
+            <span className="relative z-10">Reservar un turno</span>
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </Button>
           
@@ -69,7 +73,7 @@ export default function Hero() {
             className="rounded-none border-white/10 bg-transparent text-foreground hover:bg-white/5 px-8 py-6 text-sm tracking-[0.15em] uppercase"
             data-testid="button-hero-discover"
           >
-            Discover the Atelier
+            Descubrir el Atelier
           </Button>
         </motion.div>
       </div>
@@ -81,7 +85,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
       >
-        <span className="text-[10px] tracking-[0.3em] uppercase text-foreground/40">Scroll</span>
+        <span className="text-[10px] tracking-[0.3em] uppercase text-foreground/40">Deslizar</span>
         <motion.div 
           className="w-[1px] h-12 bg-gradient-to-b from-primary/50 to-transparent origin-top"
           animate={{ scaleY: [0, 1, 0], translateY: [0, 0, 10] }}

@@ -30,33 +30,33 @@ export default function About() {
             className="flex flex-col justify-center"
           >
             <span className="text-primary font-medium tracking-[0.2em] text-sm uppercase mb-4">
-              The Philosophy
+              La Filosofía
             </span>
             <h2 className="text-4xl md:text-5xl font-light text-foreground mb-8 leading-tight">
-              Quiet Mastery. <br />
-              <span className="italic font-serif text-primary/90">Absolute Focus.</span>
+              Maestría silenciosa. <br />
+              <span className="italic font-serif text-primary/90">Enfoque absoluto.</span>
             </h2>
             
             <div className="space-y-6 text-foreground/60 font-light text-lg">
               <p>
-                NOIR was founded on a singular premise: men's grooming has lost its reverence. In a world of rushed appointments and loud distractions, we offer a sanctuary of silence and skill.
+                NOIR nació de una premisa singular: el cuidado masculino perdió su reverencia. En un mundo de turnos apresurados y distracciones ruidosas, ofrecemos un santuario de silencio y habilidad.
               </p>
               <p>
-                Drawing inspiration from Japanese omakase traditions and minimalist architecture, every service at NOIR is a calculated ritual. Our master barbers focus entirely on the craft, utilizing techniques honed over decades to deliver uncompromising precision.
+                Inspirados en la tradición japonesa del omakase y la arquitectura minimalista, cada servicio en NOIR es un ritual calculado. Nuestros maestros barberos se concentran por completo en el oficio, aplicando técnicas perfeccionadas durante décadas.
               </p>
               <p>
-                No rush. No pretense. Just the pure elevation of the grooming experience.
+                Sin apuros. Sin pretensiones. Solo la elevación pura de la experiencia.
               </p>
             </div>
 
             <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/5 pt-8">
               <div>
                 <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">01.</h4>
-                <p className="text-sm text-foreground/50 uppercase tracking-widest">Master Barbers</p>
+                <p className="text-sm text-foreground/50 uppercase tracking-widest">Maestros Barberos</p>
               </div>
               <div>
                 <h4 className="text-3xl font-light text-foreground mb-2 tracking-tighter">45<span className="text-primary/70 text-xl">m</span></h4>
-                <p className="text-sm text-foreground/50 uppercase tracking-widest">Minimum Appt</p>
+                <p className="text-sm text-foreground/50 uppercase tracking-widest">Turno Mínimo</p>
               </div>
             </div>
           </motion.div>

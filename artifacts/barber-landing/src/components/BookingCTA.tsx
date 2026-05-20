@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useBooking } from "@/context/BookingContext";
 
 export default function BookingCTA() {
+  const { openBooking } = useBooking();
+
   return (
     <section className="py-40 relative flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-background z-0" />
@@ -20,24 +23,25 @@ export default function BookingCTA() {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           
           <h2 className="text-4xl md:text-6xl font-light text-foreground mb-6">
-            Begin the <span className="italic font-serif text-primary/90">Ritual.</span>
+            Comenzá el <span className="italic font-serif text-primary/90">Ritual.</span>
           </h2>
           
           <p className="text-foreground/60 font-light text-lg mb-12 max-w-md">
-            Appointments are highly limited to ensure uncompromised quality and an unhurried experience. 
+            Los turnos son limitados para garantizar una calidad sin concesiones y una experiencia sin apuros.
           </p>
 
           <Button 
+            onClick={() => openBooking()}
             size="lg"
             className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-8 text-base tracking-[0.2em] uppercase relative overflow-hidden group shadow-[0_0_30px_rgba(204,153,85,0.2)] hover:shadow-[0_0_40px_rgba(204,153,85,0.4)] transition-all duration-500 w-full md:w-auto"
             data-testid="button-cta-book"
           >
-            <span className="relative z-10">Secure Your Chair</span>
+            <span className="relative z-10">Asegurar mi turno</span>
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </Button>
 
           <p className="mt-8 text-xs text-foreground/40 uppercase tracking-widest">
-            Walk-ins are respectfully declined.
+            No se aceptan turnos sin reserva.
           </p>
         </motion.div>
       </div>

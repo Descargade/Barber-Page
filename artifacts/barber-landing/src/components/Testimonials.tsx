@@ -2,19 +2,19 @@ import { motion } from "framer-motion";
 
 const testimonials = [
   {
-    quote: "The only hour of my week where my phone stays in my pocket. The attention to detail borders on obsessive, in the best way possible.",
-    author: "James M.",
-    role: "Creative Director"
+    quote: "La única hora de mi semana donde el teléfono queda en el bolsillo. La atención al detalle roza la obsesión, en el mejor sentido.",
+    author: "Martín G.",
+    role: "Director Creativo"
   },
   {
-    quote: "It doesn't feel like getting a haircut. It feels like visiting a private club where everyone knows exactly what they are doing.",
-    author: "Alexander T.",
-    role: "Architect"
+    quote: "No parece ir a cortarse el pelo. Es como visitar un club privado donde todos saben exactamente lo que hacen.",
+    author: "Alejandro T.",
+    role: "Arquitecto"
   },
   {
-    quote: "A masterclass in restraint and skill. They don't just cut hair; they architect it. Worth every penny.",
-    author: "David L.",
-    role: "Founder"
+    quote: "Una clase magistral de contención y habilidad. No solo cortan el cabello: lo arquitectonizan. Vale cada peso.",
+    author: "Diego L.",
+    role: "Fundador"
   }
 ];
 
