@@ -17,7 +17,7 @@ export default function Hero() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           src="/images/hero.png"
-          alt="NOIR Studio Interior"
+          alt="BARBER Studio Interior"
           className="w-full h-full object-cover"
         />
       </div>
@@ -30,7 +30,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="text-primary font-medium tracking-[0.2em] text-xs md:text-sm uppercase mb-6 block">
-            Tribeca, Nueva York
+            Mendoza, Argentina
           </span>
         </motion.div>
 
