@@ -17,7 +17,7 @@ export default function Hero() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           src="/images/hero.png"
-          alt="BARBER Studio Interior"
+          alt="Noir Studio Interior"
           className="w-full h-full object-cover"
         />
       </div>
