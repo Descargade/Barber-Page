@@ -8,15 +8,15 @@ export default function Footer() {
             NOIR<span className="text-primary">.</span>
           </a>
           <p className="font-light text-sm max-w-xs mb-8">
-            Un santuario de silencio, habilidad y precisión sin concesiones.
+            Un lugar de silencio, habilidad y precisión sin concesiones.
           </p>
         </div>
 
         <div className="col-span-1 flex flex-col gap-4">
           <h4 className="text-foreground uppercase tracking-widest text-xs font-medium mb-2">Ubicación</h4>
           <p className="font-light text-sm">
-            184 Franklin St<br />
-            Tribeca, NY 10013
+            Para<br />
+            Modificar
           </p>
           <a href="#" className="text-primary text-sm hover:underline decoration-primary/50 underline-offset-4 w-fit transition-all mt-2">
             Cómo llegar
