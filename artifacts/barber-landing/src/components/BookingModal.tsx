@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Check, ChevronLeft } from "lucide-react";
+import { X, Check, ChevronLeft, Calendar, Clock, Scissors, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useBooking, SERVICES, BARBERS, isSlotTaken } from "@/context/BookingContext";
 
@@ -50,11 +50,11 @@ export default function BookingModal() {
     for (let i = 1; i <= 7; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
-      const dayName = d.toLocaleDateString('es-ES', { weekday: 'short' });
+      const dayName = d.toLocaleDateString("es-ES", { weekday: "short" });
       const dayNum = d.getDate();
       dates.push({
-        value: d.toISOString().split('T')[0],
-        label: `${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum}`
+        value: d.toISOString().split("T")[0],
+        label: `${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum}`,
       });
     }
     return dates;
@@ -72,11 +72,11 @@ export default function BookingModal() {
         id: Date.now().toString(),
         name,
         phone,
-        service: service ?? "",
-        barberId: barber ?? "",
-        barberName: barberObj?.name ?? barber ?? "",
-        date: date ?? "",
-        time: time ?? "",
+        service,
+        barberId: barber,
+        barberName: barberObj?.name ?? barber,
+        date,
+        time,
         createdAt: new Date().toISOString(),
       });
       setIsSuccess(true);
@@ -85,7 +85,7 @@ export default function BookingModal() {
     }
   };
 
-  const variants = {
+  const slideVariants = {
     initial: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
     animate: { x: 0, opacity: 1, transition: { duration: 0.3, ease: [0.32, 0, 0.67, 0] } },
     exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0, transition: { duration: 0.2 } }),
@@ -94,7 +94,11 @@ export default function BookingModal() {
   const renderStepHeader = (title: string, subtitle?: string) => (
     <div>
       {step > 1 && !isSuccess && (
-        <button onClick={goBack} className="flex items-center gap-2 text-foreground/40 hover:text-foreground transition-colors text-sm mb-4 group" data-testid="button-back">
+        <button
+          onClick={goBack}
+          className="flex items-center gap-2 text-foreground/40 hover:text-foreground transition-colors text-sm mb-4 group"
+          data-testid="button-back"
+        >
           <ChevronLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
           Volver
         </button>
@@ -104,12 +108,17 @@ export default function BookingModal() {
     </div>
   );
 
-  const selectedServiceName = SERVICES.find(s => s.slug === service)?.name;
-  const selectedBarberName = BARBERS.find(b => b.id === barber)?.name;
+  const selectedServiceObj = SERVICES.find(s => s.slug === service);
+  const selectedBarberObj = BARBERS.find(b => b.id === barber);
+
+  const formatDate = (d: string) => {
+    const dt = new Date(d + "T12:00:00");
+    return dt.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  };
 
   return (
     <AnimatePresence>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -122,22 +131,22 @@ export default function BookingModal() {
           exit={{ scale: 0.95, opacity: 0 }}
           className="bg-card border border-white/8 max-w-lg w-full p-8 md:p-10 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.8)] relative overflow-hidden flex flex-col min-h-[420px]"
         >
-          <button 
+          <button
             onClick={closeBooking}
             className="absolute top-6 right-6 text-foreground/50 hover:text-foreground transition-colors z-10"
             data-testid="button-close-modal"
           >
             <X size={24} />
           </button>
-          
+
           {!isSuccess && (
             <div className="flex gap-1.5 mb-8 w-full">
               {[1, 2, 3, 4, 5].map((i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={`h-0.5 flex-1 rounded-full transition-colors duration-300 ${
                     i <= step ? "bg-primary" : "bg-white/10"
-                  }`} 
+                  }`}
                 />
               ))}
             </div>
@@ -145,44 +154,134 @@ export default function BookingModal() {
 
           <div className="relative flex-1 flex flex-col">
             <AnimatePresence mode="wait" custom={direction}>
+
+              {/* ── SUCCESS SCREEN ── */}
               {isSuccess ? (
-                <motion.div 
+                <motion.div
                   key="success"
-                  custom={direction}
-                  variants={variants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="flex flex-col items-center justify-center flex-1 text-center"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex flex-col items-center flex-1 text-center pt-2"
                 >
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
-                    className="w-16 h-16 bg-primary/15 rounded-full flex items-center justify-center mb-6"
-                  >
-                    <Check className="w-8 h-8 text-primary" />
-                  </motion.div>
-                  <h2 className="text-2xl font-light text-foreground mb-4">¡Turno confirmado!</h2>
-                  <div className="text-foreground/60 font-light mb-8 space-y-2">
-                    <p>{name}</p>
-                    <p>{selectedServiceName}</p>
-                    <p>{selectedBarberName}</p>
-                    <p>{date} a las {time}</p>
+                  {/* Animated glow ring + check */}
+                  <div className="relative mb-8">
+                    <motion.div
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 180, damping: 18, delay: 0.1 }}
+                      className="w-20 h-20 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center"
+                    >
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
+                      >
+                        <Check className="w-9 h-9 text-primary" strokeWidth={1.5} />
+                      </motion.div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0] }}
+                      transition={{ duration: 1.8, delay: 0.4, repeat: Infinity, repeatDelay: 1.5 }}
+                      className="absolute inset-0 rounded-full border border-primary/40"
+                    />
                   </div>
-                  <Button 
-                    onClick={closeBooking}
-                    className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
-                    data-testid="button-close-success"
+
+                  {/* Heading */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.35 }}
+                    className="mb-1"
                   >
-                    Cerrar
-                  </Button>
+                    <p className="text-primary text-xs uppercase tracking-[0.25em] font-medium mb-3">Reserva recibida</p>
+                    <h2 className="text-2xl font-light text-foreground tracking-tight">¡Todo listo, {name.split(" ")[0]}!</h2>
+                  </motion.div>
+
+                  {/* Divider */}
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="w-12 h-px bg-primary/40 my-6"
+                  />
+
+                  {/* Summary cards */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.55 }}
+                    className="w-full bg-white/3 border border-white/6 rounded-xl p-5 mb-5 text-left space-y-3.5"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Scissors size={14} className="text-primary/70 shrink-0" />
+                      <div>
+                        <p className="text-xs text-foreground/40 uppercase tracking-widest mb-0.5">Servicio</p>
+                        <p className="text-sm text-foreground font-light">{selectedServiceObj?.name}</p>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-white/5" />
+                    <div className="flex items-center gap-3">
+                      <User size={14} className="text-primary/70 shrink-0" />
+                      <div>
+                        <p className="text-xs text-foreground/40 uppercase tracking-widest mb-0.5">Barbero</p>
+                        <p className="text-sm text-foreground font-light">{selectedBarberObj?.name}</p>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-white/5" />
+                    <div className="flex items-center gap-3">
+                      <Calendar size={14} className="text-primary/70 shrink-0" />
+                      <div>
+                        <p className="text-xs text-foreground/40 uppercase tracking-widest mb-0.5">Fecha</p>
+                        <p className="text-sm text-foreground font-light capitalize">{date ? formatDate(date) : "—"}</p>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-white/5" />
+                    <div className="flex items-center gap-3">
+                      <Clock size={14} className="text-primary/70 shrink-0" />
+                      <div>
+                        <p className="text-xs text-foreground/40 uppercase tracking-widest mb-0.5">Hora</p>
+                        <p className="text-sm text-foreground font-light">{time} hs</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Status badge */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.7 }}
+                    className="flex items-center gap-2 mb-6"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    <p className="text-xs text-foreground/40 tracking-wide">
+                      Tu turno será confirmado a la brevedad
+                    </p>
+                  </motion.div>
+
+                  {/* CTA */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.8 }}
+                    className="w-full mt-auto"
+                  >
+                    <Button
+                      onClick={closeBooking}
+                      className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.25)] transition-all"
+                      data-testid="button-close-success"
+                    >
+                      Cerrar
+                    </Button>
+                  </motion.div>
                 </motion.div>
+
               ) : step === 1 ? (
-                <motion.div 
+                <motion.div
                   key="step1"
                   custom={direction}
-                  variants={variants}
+                  variants={slideVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
@@ -195,8 +294,8 @@ export default function BookingModal() {
                         key={s.slug}
                         onClick={() => setService(s.slug)}
                         className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                          service === s.slug 
-                            ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(204,153,85,0.15)] ring-1 ring-primary" 
+                          service === s.slug
+                            ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(204,153,85,0.15)] ring-1 ring-primary"
                             : "border-white/10 bg-card/50 hover:border-white/30"
                         }`}
                         data-testid={`service-${s.slug}`}
@@ -210,7 +309,7 @@ export default function BookingModal() {
                     ))}
                   </div>
                   <div className="mt-auto pt-4">
-                    <Button 
+                    <Button
                       onClick={goNext}
                       disabled={!service}
                       className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
@@ -220,11 +319,12 @@ export default function BookingModal() {
                     </Button>
                   </div>
                 </motion.div>
+
               ) : step === 2 ? (
-                <motion.div 
+                <motion.div
                   key="step2"
                   custom={direction}
-                  variants={variants}
+                  variants={slideVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
@@ -238,8 +338,8 @@ export default function BookingModal() {
                         whileHover={{ y: -2 }}
                         onClick={() => setBarber(b.id)}
                         className={`p-6 rounded-xl border cursor-pointer transition-all flex flex-col items-center text-center ${
-                          barber === b.id 
-                            ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(204,153,85,0.15)] ring-1 ring-primary" 
+                          barber === b.id
+                            ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(204,153,85,0.15)] ring-1 ring-primary"
                             : "border-white/10 bg-card/50 hover:border-white/30"
                         }`}
                         data-testid={`barber-${b.id}`}
@@ -253,7 +353,7 @@ export default function BookingModal() {
                     ))}
                   </div>
                   <div className="mt-auto pt-4">
-                    <Button 
+                    <Button
                       onClick={goNext}
                       disabled={!barber}
                       className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
@@ -263,71 +363,70 @@ export default function BookingModal() {
                     </Button>
                   </div>
                 </motion.div>
+
               ) : step === 3 ? (
-                <motion.div 
+                <motion.div
                   key="step3"
                   custom={direction}
-                  variants={variants}
+                  variants={slideVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
                   className="flex flex-col flex-1 gap-6"
                 >
-                  {renderStepHeader("Fecha y hora", `${selectedServiceName} · ${selectedBarberName}`)}
-                  <div>
-                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                      {generateDates().map((d) => (
-                        <button
-                          key={d.value}
-                          onClick={() => setDate(d.value)}
-                          className={`whitespace-nowrap px-4 py-2 rounded-full border transition-all text-sm ${
-                            date === d.value
-                              ? "border-primary bg-primary text-primary-foreground"
-                              : "border-white/10 bg-transparent text-foreground hover:border-white/30"
-                          }`}
-                          data-testid={`date-${d.value}`}
-                        >
-                          {d.label}
-                        </button>
-                      ))}
-                    </div>
+                  {renderStepHeader("Fecha y hora", `${selectedServiceObj?.name ?? ""} · ${selectedBarberObj?.name ?? ""}`)}
+                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    {generateDates().map((d) => (
+                      <button
+                        key={d.value}
+                        onClick={() => setDate(d.value)}
+                        className={`whitespace-nowrap px-4 py-2 rounded-full border transition-all text-sm ${
+                          date === d.value
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-white/10 bg-transparent text-foreground hover:border-white/30"
+                        }`}
+                        data-testid={`date-${d.value}`}
+                      >
+                        {d.label}
+                      </button>
+                    ))}
                   </div>
-                  
+
                   {date && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="grid grid-cols-5 gap-2 mt-2"
+                      className="grid grid-cols-5 gap-2"
                     >
-                      {loading ? (
-                        Array.from({ length: 10 }).map((_, i) => (
-                          <div key={i} className="py-2 rounded-full border border-white/5 bg-white/3 animate-pulse h-[38px]" />
-                        ))
-                      ) : times.map((t) => {
-                        const taken = service && barber && date ? isSlotTaken(appointments, service, barber, date, t) : false;
-                        return (
-                          <button
-                            key={t}
-                            disabled={taken}
-                            onClick={() => setTime(t)}
-                            className={`py-2 rounded-full border text-center transition-all text-sm ${
-                              taken 
-                                ? "opacity-30 cursor-not-allowed line-through border-white/5 text-foreground/50"
-                                : time === t
-                                  ? "border-primary bg-primary text-primary-foreground"
-                                  : "border-white/10 bg-transparent text-foreground hover:border-white/30"
-                            }`}
-                            data-testid={`time-${t}`}
-                          >
-                            {t}
-                          </button>
-                        );
-                      })}
+                      {loading
+                        ? Array.from({ length: 10 }).map((_, i) => (
+                            <div key={i} className="py-2 rounded-full border border-white/5 bg-white/3 animate-pulse h-[38px]" />
+                          ))
+                        : times.map((t) => {
+                            const taken = service && barber && date ? isSlotTaken(appointments, service, barber, date, t) : false;
+                            return (
+                              <button
+                                key={t}
+                                disabled={taken}
+                                onClick={() => setTime(t)}
+                                className={`py-2 rounded-full border text-center transition-all text-sm ${
+                                  taken
+                                    ? "opacity-30 cursor-not-allowed line-through border-white/5 text-foreground/50"
+                                    : time === t
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-white/10 bg-transparent text-foreground hover:border-white/30"
+                                }`}
+                                data-testid={`time-${t}`}
+                              >
+                                {t}
+                              </button>
+                            );
+                          })}
                     </motion.div>
                   )}
-                  
+
                   <div className="mt-auto pt-4">
-                    <Button 
+                    <Button
                       onClick={goNext}
                       disabled={!date || !time}
                       className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
@@ -337,11 +436,12 @@ export default function BookingModal() {
                     </Button>
                   </div>
                 </motion.div>
+
               ) : (
-                <motion.div 
+                <motion.div
                   key="step4"
                   custom={direction}
-                  variants={variants}
+                  variants={slideVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
@@ -366,20 +466,20 @@ export default function BookingModal() {
                       data-testid="input-phone"
                     />
                   </div>
-                  
-                  <div className="bg-muted/30 rounded-xl p-4 border border-white/5 mt-2">
-                    <div className="grid grid-cols-[80px_1fr] gap-2 text-sm">
+
+                  <div className="bg-white/3 rounded-xl p-4 border border-white/6">
+                    <div className="grid grid-cols-[72px_1fr] gap-y-2 gap-x-3 text-sm">
                       <span className="text-foreground/40">Servicio</span>
-                      <span className="text-foreground">{selectedServiceName}</span>
+                      <span className="text-foreground">{selectedServiceObj?.name}</span>
                       <span className="text-foreground/40">Barbero</span>
-                      <span className="text-foreground">{selectedBarberName}</span>
+                      <span className="text-foreground">{selectedBarberObj?.name}</span>
                       <span className="text-foreground/40">Fecha</span>
                       <span className="text-foreground">{date} · {time}</span>
                     </div>
                   </div>
-                  
+
                   <div className="mt-auto pt-4">
-                    <Button 
+                    <Button
                       onClick={() => void handleSubmit()}
                       disabled={!name.trim() || !/^[0-9\s\-\+]{8,}$/.test(phone) || isSubmitting}
                       className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(204,153,85,0.3)] transition-all"
